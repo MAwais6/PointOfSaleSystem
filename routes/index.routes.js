@@ -9,7 +9,7 @@ const {loginPage} = require("../controller/loginPage")
 const {signupPage} = require("../controller/signupPage")
 const {createBillPage} = require("../controller/createBillPage")
 const {profitsPage} = require("../controller/profitsPage")
-const {showlowStockPage} = require("../controller/showlowStockPage")
+const {showLowStockPage} = require("../controller/showlowStock.js")
 const {showOrdersPage} = require("../controller/showOrdersPage")
 
 
@@ -19,9 +19,9 @@ router.get("/aboutus" , (req,res) => aboutPage(req,res))
 router.get("/contactus" , (req,res) => contactPage(req,res))
 router.get("/login" , (req,res) => loginPage(req,res))
 router.get("/signup" , (req,res) => signupPage(req,res))
-router.get("/createbill" , (req,res) => createBillPage(req,res))
+//router.get("/createbill" , (req,res) => createBillPage(req,res))
 router.get("/profits" , (req,res) => profitsPage(req,res))
-router.get("/showlowstock" , (req,res) => showlowStockPage(req,res))
+router.get("/showlowstock" , (req,res) => showLowStockPage(req,res))
 router.get("/showorders" , (req,res) => showOrdersPage(req,res))
 
 
