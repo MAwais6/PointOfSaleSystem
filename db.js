@@ -3,7 +3,7 @@ var connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'mydb'
+    database: 'PointOfSaleSystem'
 });
 
 connection.connect(function(err) {
@@ -11,9 +11,10 @@ connection.connect(function(err) {
     console.log("Connected!");
 });
 
+module.exports = connection;
 
-connection.query("SELECT * FROM customers", function (err, result, fields) {
-    if (err) throw err;
-    console.log(result);
-});
+// connection.query("SELECT * FROM customers", function (err, result, fields) {
+//     if (err) throw err;
+//     console.log(result);
+// });
 
