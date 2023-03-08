@@ -28,9 +28,9 @@ router.get("/profits" , (req,res) => profitsPage(req,res))
 router.get("/showlowstock" , (req,res) => showLowStockPage(req,res))
 router.get("/showorders" , (req,res) => showOrdersPage(req,res))
 
-router.get("/products" , (req,res) => showOrdersPage(req,res))
-router.get("/discounts" , (req,res) => showOrdersPage(req,res))
-router.get("/category" , (req,res) => showOrdersPage(req,res))
+router.get("/products" , (req,res) => productsPage(req,res))
+router.get("/discounts" , (req,res) => discountsPage(req,res))
+router.get("/category" , (req,res) => categoryPage(req,res))
 
 
 // export the router
