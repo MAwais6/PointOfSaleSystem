@@ -1,0 +1,29 @@
+module.exports = (sequelize, Sequelize) => {
+    const Category = sequelize.define("Category", {
+        Cat_ID: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+            autoIncrement: true,
+            primaryKey: true,
+            get() {
+                return 'myPrefix' + this.getDataValue('Cat_ID').toString().padStart(6, '0');
+            }
+        },
+        Cat_Name : {
+            type: Sequelize.STRING(64),
+            allowNull: false,
+            validate:{
+                is: `^[A-Za-z]+(?:[\\s-][A-Za-z]+)*$`
+            }
+        },
+        Cat_Description: {
+            type: Sequelize.STRING,
+            allowNull: false,
+            validate: {
+                len: [10, 200] // validates that the address is between 10 and 200 characters long
+            }
+        }
+    });
+    
+    return Category;
+}

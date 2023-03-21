@@ -1,20 +1,15 @@
-var mysql = require('mysql');
-var connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'PointOfSaleSystem'
-});
+const Sequelize = require("sequelize")
+const sequelize = new Sequelize(
+    'PointOfSaleSystem',
+    'root',
+    '',
+     {
+       host: 'localhost',
+       dialect: 'mysql'
+     }
+   );
+const db = {};
+db.Sequelize = Sequelize;
+db.sequelize = sequelize;
 
-connection.connect(function(err) {
-    if (err) throw err;
-    console.log("Connected!");
-});
-
-module.exports = connection;
-
-// connection.query("SELECT * FROM customers", function (err, result, fields) {
-//     if (err) throw err;
-//     console.log(result);
-// });
-
+module.exports = db
