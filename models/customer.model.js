@@ -44,7 +44,6 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: false,
             validate: {
                 len: [6, 20], // validates that the password is between 6 and 20 characters long
-                is: /^[0-9a-f]{64}$/i
             }            
         },
         C_Username: {

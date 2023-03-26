@@ -7,6 +7,13 @@ db.subCategory = require("./sub.category.model")(db.sequelize,db.Sequelize);
 db.orders = require("./order.model")(db.sequelize,db.Sequelize);
 db.ordersItems = require("./order.items.model")(db.sequelize,db.Sequelize);
 db.Payments = require("./payment.model")(db.sequelize,db.Sequelize);
+
+
+db.dicounts = require("./discount.model")(db.sequelize,db.Sequelize);
+db.discountItems = require("./discount.items.model")(db.sequelize,db.Sequelize);
+db.products = require("./product.model")(db.sequelize,db.Sequelize);
+
+
 // Associations 
 db.category.hasMany(db.subCategory, {foreignKey: 'Cat_ID'});
 db.subCategory.belongsTo(db.category, {foreignKey: 'Cat_ID'});
