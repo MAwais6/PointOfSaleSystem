@@ -1,5 +1,5 @@
 const db = require("../models/index.model.js");
-const Discount = db.Discount;
+const Discounts = db.Discount;
 const Op = db.Sequelize.Op;
 exports.create = (req, res) => {
   if (!req.body.StartDate) {
@@ -12,7 +12,7 @@ exports.create = (req, res) => {
     StartDate: req.body.StartDate,
     EndDate: req.body.EndDate
   };
-  Discount.create(discount)
+  Discounts.create(discount)
     .then((data) => {
       res.send(data);
     })
@@ -24,22 +24,30 @@ exports.create = (req, res) => {
     });
 };
 exports.findAll = (req, res) => {
-  const StartDate = req.query.StartDate;
-  var condition = StartDate ? { StartDate: { [Op.like]: `%${StartDate}%` } } : null;
-  Discount.findAll({ where: condition })
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving Discounts.",
-      });
-    });
+    if(req.query.page && req.query.pageSize){
+      page = req.query.page
+      pageSize = req.query.pageSize
+      condition = { offset:(page*1-1)*pageSize, limit:pageSize*1 }
+    }
+    else{
+      EndDate = req.query.EndDate;
+      condition = EndDate ? {where: { EndDate: { [Op.like]: `%${EndDate}%` } } } : {}
+    }
+    console.log(condition)
+    Discounts.findAll(condition)
+      .then((data) => {
+        res.send(data)
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while retrieving Products.",
+        })
+      })
 };
 exports.findOne = (req, res) => {
   const D_ID = req.params.D_ID;
-  Discount.findByPk(D_ID)
+  Discounts.findByPk(D_ID)
     .then((data) => {
       if (data) {
         res.send(data);
@@ -57,7 +65,7 @@ exports.findOne = (req, res) => {
 };
 exports.update = (req, res) => {
   const D_ID = req.params.D_ID;
-  Discount.update(req.body, {
+  Discounts.update(req.body, {
     where: { D_ID: D_ID },
   })
     .then((num) => {
@@ -82,7 +90,7 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
   const D_ID = req.params.D_ID;
 
-  Discount.destroy({
+  Discounts.destroy({
     where: { D_ID: D_ID },
   })
     .then((num) => {
@@ -103,7 +111,7 @@ exports.delete = (req, res) => {
     });
 };
 exports.deleteAll = (req, res) => {
-    Discount.destroy({
+    Discounts.destroy({
     where: {},
     truncate: false,
   })
