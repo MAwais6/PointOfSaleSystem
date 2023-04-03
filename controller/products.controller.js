@@ -1,3 +1,4 @@
+const { isSet } = require("util/types");
 const db = require("../models/index.model.js");
 const Products = db.Products;
 const Op = db.Sequelize.Op;
@@ -15,49 +16,57 @@ exports.create = (req, res) => {
         P_SellPrice: req.body.P_SellPrice,
         P_Quantity: req.body.P_Quantity,
         P_BarCode: req.body.P_BarCode
-  };
-  Products.create(product)
+      };
+      Products.create(product)
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the Product.",
+        err.message || "Some error occurred while creating the Product.",
       });
     });
-};
-exports.findAll = (req, res) => {
-  const P_Name = req.query.P_Name;
-  var condition = P_Name ? { P_Name: { [Op.like]: `%${P_Name}%` } } : null;
-  Products.findAll({ where: condition })
+  };
+  exports.findOne = (req, res) => {
+    const P_ID = req.params.P_ID;
+    Products.findByPk(P_ID)
+      .then((data) => {
+        if (data) {
+          res.send(data);
+        } else {
+          res.status(404).send({
+            message: `Cannot find Product with id=${P_ID}.`,
+          });
+        }
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message: "Error retrieving Product with id=" + P_ID,
+        });
+      });
+  };
+  exports.findAll = (req, res) => {
+  if(req.query.page && req.query.pageSize){
+    page = req.query.page
+    pageSize = req.query.pageSize
+    condition = { offset:(page*1-1)*pageSize, limit:pageSize*1 }
+  }
+  else{
+    P_Name = req.query.P_Name
+    condition = P_Name ? {where: { P_Name: { [Op.like]: `%${P_Name}%` } } } : {}
+  }
+  console.log(condition)
+  Products.findAll(condition)
     .then((data) => {
-      res.send(data);
+      res.send(data)
     })
     .catch((err) => {
       res.status(500).send({
         message:
           err.message || "Some error occurred while retrieving Products.",
-      });
-    });
-};
-exports.findOne = (req, res) => {
-  const P_ID = req.params.P_ID;
-  Products.findByPk(P_ID)
-    .then((data) => {
-      if (data) {
-        res.send(data);
-      } else {
-        res.status(404).send({
-          message: `Cannot find Product with id=${P_ID}.`,
-        });
-      }
+      })
     })
-    .catch((err) => {
-      res.status(500).send({
-        message: "Error retrieving Product with id=" + P_ID,
-      });
-    });
 };
 exports.update = (req, res) => {
   const P_ID = req.params.P_ID;
