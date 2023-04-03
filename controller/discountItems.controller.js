@@ -21,18 +21,26 @@ exports.create = (req, res) => {
     });
 };
 exports.findAll = (req, res) => {
-  const DI_Percentage = req.query.DI_ID;
-  var condition = DI_Percentage ? { DI_ID: { [Op.like]: `%${DI_Percentage}%` } } : null;
-  DiscountItems.findAll({ where: condition })
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving Product item.",
-      });
-    });
+    if(req.query.page && req.query.pageSize){
+      page = req.query.page
+      pageSize = req.query.pageSize
+      condition = { offset:(page*1-1)*pageSize, limit:pageSize*1 }
+    }
+    else{
+      DI_Percentage = req.query.DI_Percentage;
+      condition = DI_Percentage ? {where: { DI_Percentage: { [Op.eq]: `${DI_Percentage}` } } } : {}
+    }
+    console.log(condition)
+    DiscountItems.findAll(condition)
+      .then((data) => {
+        res.send(data)
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while retrieving Products.",
+        })
+      })
 };
 exports.findOne = (req, res) => {
   const DI_ID = req.params.DI_ID;
