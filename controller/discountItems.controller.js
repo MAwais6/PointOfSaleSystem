@@ -28,7 +28,7 @@ exports.findAll = (req, res) => {
     }
     else{
       DI_Percentage = req.query.DI_Percentage;
-      condition = DI_Percentage ? {where: { DI_Percentage: { [Op.eq]: `${DI_Percentage}` } } } : {}
+      condition = DI_Percentage ? {where: { DI_Percentage: { [Op.gte]: `${DI_Percentage}` } } } : {}
     }
     console.log(condition)
     DiscountItems.findAll(condition)
