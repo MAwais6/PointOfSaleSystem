@@ -1,4 +1,3 @@
-const { isSet } = require("util/types");
 const db = require("../models/index.model.js");
 const Products = db.Products;
 const Op = db.Sequelize.Op;
@@ -47,19 +46,43 @@ exports.create = (req, res) => {
       });
   };
   exports.findAll = (req, res) => {
-  if(req.query.page && req.query.pageSize){
+  var condition
     page = req.query.page
     pageSize = req.query.pageSize
-    condition = { offset:(page*1-1)*pageSize, limit:pageSize*1 }
-  }
-  else{
-    P_Name = req.query.P_Name
-    condition = P_Name ? {where: { P_Name: { [Op.like]: `%${P_Name}%` } } } : {}
-  }
-  console.log(condition)
+    priceG = req.query.priceG
+    priceL = req.query.priceL
+    if(!priceG){
+      priceG = 0
+    }
+    if(priceG < 0){
+      priceG *= -1
+    }
+    if(!priceL){
+      priceL = 9007199254740991
+    }
+    if(priceL < 0){
+      priceL *= 1
+    }
+    if(!page){
+      page = 1
+    }
+    if(!pageSize){
+      pageSize = 2
+    }
+    if(priceG > priceL){
+      temp = priceG
+      priceG = priceL
+      priceL = temp
+    }
+      condition = {
+        offset: ((page*1-1)*pageSize),
+        limit: pageSize*1, 
+      where: {[Op.and]: [{P_SellPrice: { [Op.gte]: `${priceG}` }},
+      {P_SellPrice: { [Op.lte]: `${priceL}` }}]}
+    }
   Products.findAll(condition)
     .then((data) => {
-      res.send(data)
+        res.send(data)
     })
     .catch((err) => {
       res.status(500).send({
