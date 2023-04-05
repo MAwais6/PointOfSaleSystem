@@ -31,7 +31,7 @@ exports.findAll = (req, res) => {
     }
     else{
       EndDate = req.query.EndDate;
-      condition = EndDate ? {where: { EndDate: { [Op.like]: `%${EndDate}%` } } } : {}
+      condition = EndDate ? {where: { EndDate: { [Op.lte]: `%${EndDate}%` } } } : {}
     }
     console.log(condition)
     Discounts.findAll(condition)
