@@ -1,9 +1,12 @@
 const db = require("../models/index.model.js");
+const config = require("../config/auth.config.js");
+var bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const Customer = db.Customers;
 const Op = db.Sequelize.Op;
 
 // Create and Save a new Customer
-exports.create = (req, res) => {
+exports.signup = (req, res) => {
     // Validate request
     if (!req.body.C_Name) {
         res.status(400).send({
@@ -19,8 +22,8 @@ exports.create = (req, res) => {
         C_Address: req.body.C_Address,
         C_Email: req.body.C_Email,
         C_Phone: req.body.C_Phone,
-        C_Password: req.body.C_Password,
-        C_Status: req.body.C_Status ? req.body.C_Status : false
+        C_Password: bcrypt.hashSync(req.body.C_Password, 8),
+        C_Status: req.body.C_Status ? req.body.C_Status : "inactive"
     };
 
     // Save Customer in the database
@@ -35,3 +38,51 @@ exports.create = (req, res) => {
             });
         });
 }
+
+
+
+
+
+// sign in a customer
+
+exports.signin = (req, res) => {
+    Customer.findOne({
+        where : {
+            C_Username : req.body.C_Username
+        }
+    })
+    .then(customer => {
+        if (!customer) {
+            return res.status(404).send({ message: "Customer Not found." });
+        }
+
+        var passwordIsValid = bcrypt.compareSync(
+            req.body.C_Password,
+            customer.C_Password
+        );
+
+        if (!passwordIsValid) {
+            return res.status(401).send({
+                accessToken: null,
+                message: "Invalid Password!"
+            });
+        }
+
+        var token = jwt.sign({ id: customer.C_Username }, config.secret, {
+            expiresIn: 86400 // 24 hours
+        });
+
+        console.log("working")
+
+        res.status(200).send({
+            C_Username: customer.C_Username,
+            C_Email: customer.C_Email,
+            accessToken: token
+        });
+    })
+    .catch(err => {
+        res.status(500).send({ message: err.message });
+    }
+    );
+}
+
