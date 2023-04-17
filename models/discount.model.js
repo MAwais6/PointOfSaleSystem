@@ -6,7 +6,7 @@ module.exports = (sequelize, Sequelize) => {
             autoIncrement: true,
             primaryKey: true,
             get() {
-                return 'myPrefix' + this.getDataValue('D_ID').toString().padStart(6, '0');
+                return this.getDataValue('D_ID');
             }
         },
         StartDate: {
