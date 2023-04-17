@@ -41,18 +41,12 @@ module.exports = (sequelize, Sequelize) => {
         },
         C_Password: {
             type: Sequelize.STRING,
-            allowNull: false,
-            validate: {
-                len: [6, 20], // validates that the password is between 6 and 20 characters long
-            }            
+            allowNull: false           
         },
         C_Username: {
             type: Sequelize.STRING,
             allowNull: false,
             unique: true,
-            validate: {
-                len: [4, 20]
-            }
         },
         C_Status: {
             type: Sequelize.ENUM('active', 'inactive'),
