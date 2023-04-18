@@ -17,7 +17,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.FLOAT,
             allowNull: false
         },
-        Discount: {
+        additionalDiscount: {
             type: Sequelize.FLOAT,
             defaultValue: 0
         }
