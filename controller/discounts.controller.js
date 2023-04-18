@@ -8,10 +8,12 @@ exports.create = (req, res) => {
     });
     return;
   }
+
   const discount = {
     StartDate: req.body.StartDate,
     EndDate: req.body.EndDate
   };
+
   Discounts.create(discount)
     .then((data) => {
       res.send(data);
@@ -23,6 +25,7 @@ exports.create = (req, res) => {
       });
     });
 };
+
 exports.findAll = (req, res) => {
     if(req.query.page && req.query.pageSize){
       page = req.query.page
@@ -43,8 +46,12 @@ exports.findAll = (req, res) => {
           message:
             err.message || "Some error occurred while retrieving Products.",
         })
+
       })
+
 };
+
+
 exports.findOne = (req, res) => {
   const D_ID = req.params.D_ID;
   Discounts.findByPk(D_ID)
@@ -57,22 +64,27 @@ exports.findOne = (req, res) => {
         });
       }
     })
+
     .catch((err) => {
       res.status(500).send({
         message: "Error retrieving Discount with id=" + D_ID,
       });
     });
+
 };
+
 exports.update = (req, res) => {
   const D_ID = req.params.D_ID;
   Discounts.update(req.body, {
     where: { D_ID: D_ID },
   })
+
     .then((num) => {
       if (num == 1) {
         res.send({
           message: "Discount was updated successfully.",
         });
+
       } else {
         res.send({
           message: `Cannot update Discount with id=${D_ID}. Maybe Discount was not found or req.body is empty!`,
@@ -83,6 +95,7 @@ exports.update = (req, res) => {
       res.status(500).send({
         message: "Error updating Discount with id=" + D_ID,
       });
+
     });
 };
 
@@ -93,6 +106,7 @@ exports.delete = (req, res) => {
   Discounts.destroy({
     where: { D_ID: D_ID },
   })
+
     .then((num) => {
       if (num == 1) {
         res.send({
@@ -108,13 +122,16 @@ exports.delete = (req, res) => {
       res.status(500).send({
         message: "Could not delete Discount with id=" + D_ID,
       });
+
     });
 };
+
 exports.deleteAll = (req, res) => {
     Discounts.destroy({
     where: {},
     truncate: false,
   })
+
     .then((nums) => {
       res.send({ message: `${nums} Discounts were deleted successfully!` });
     })
@@ -123,5 +140,7 @@ exports.deleteAll = (req, res) => {
         message:
           err.message || "Some error occurred while removing all Discounts.",
       });
+      
     });
+
 };
