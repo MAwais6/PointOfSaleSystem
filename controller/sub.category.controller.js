@@ -17,6 +17,7 @@ exports.create = (req, res) => {
         Cat_Name: req.body.Cat_Name
     };
     
+
     SubCategory.create(subCategory) // Use SubCategory instead of subCategory
         .then((data) => {
         res.send(data);
