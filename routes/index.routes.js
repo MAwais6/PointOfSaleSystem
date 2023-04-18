@@ -7,10 +7,8 @@ const authRoutes = require("./auth.routes.js")
 
 
 // use the routes
-//router.use("/api/auth", authRoutes)
 router.use("/api/customer", customerRoutes)
 router.use("/api/auth", authRoutes)
-
 
 // our routes are 
 router.get("/" , (req,res) => {

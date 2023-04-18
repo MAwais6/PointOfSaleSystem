@@ -1,17 +1,9 @@
 module.exports = (sequelize, Sequelize) => {
     const Category = sequelize.define("Category", {
-        Cat_ID: {
-            type: Sequelize.INTEGER,
-            allowNull: false,
-            autoIncrement: true,
-            primaryKey: true,
-            get() {
-                return 'myPrefix' + this.getDataValue('Cat_ID').toString().padStart(6, '0');
-            }
-        },
         Cat_Name : {
             type: Sequelize.STRING(64),
             allowNull: false,
+            primaryKey: true,
             validate:{
                 is: `^[A-Za-z]+(?:[\\s-][A-Za-z]+)*$`
             }

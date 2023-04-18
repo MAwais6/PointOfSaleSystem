@@ -44,7 +44,6 @@ exports.signup = (req, res) => {
 
 
 // sign in a customer
-
 exports.signin = (req, res) => {
     Customer.findOne({
         where : {
@@ -72,7 +71,8 @@ exports.signin = (req, res) => {
             expiresIn: 86400 // 24 hours
         });
 
-        console.log("working")
+        // Set a cookie containing the JWT token
+        res.cookie("token", token, { maxAge: 86400000, httpOnly: true });
 
         res.status(200).send({
             C_Username: customer.C_Username,

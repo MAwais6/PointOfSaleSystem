@@ -1,15 +1,14 @@
 const jwt = require('jsonwebtoken');
 const config = require('../config/auth.config.js');
-const db = require('../models/index.model.js');
-const Customer = db.customer;
 
 verifyToken = (req, res, next) => { 
-    let token = req.headers["x-access-token"];
-    if (!token) {
+    if (!req.cookies || !req.cookies.token) {
         return res.status(403).send({
-        message: "No token provided!"
+            message: "No token provided!"
         });
     }
+    
+    const token = req.cookies.token;
     
     jwt.verify(token, config.secret, (err, decoded) => {
         if (err) {

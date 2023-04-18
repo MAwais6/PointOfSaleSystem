@@ -16,8 +16,8 @@ db.discountItems = require("./discount.items.model")(db.sequelize,db.Sequelize);
 
 
 // Associations 
-db.category.hasMany(db.subCategory, {foreignKey: 'Cat_ID'});
-db.subCategory.belongsTo(db.category, {foreignKey: 'Cat_ID'});
+db.category.hasMany(db.subCategory, {foreignKey: 'Cat_Name'});
+db.subCategory.belongsTo(db.category, {foreignKey: 'Cat_Name'});
 
 db.Customers.hasMany(db.orders, {foreignKey: 'C_ID'});
 db.orders.belongsTo(db.Customers, {foreignKey: 'C_ID'});
@@ -37,10 +37,10 @@ db.discountItems.belongsTo(db.discount, {foreignKey: 'D_ID'});
 
 db.Customers.hasMany(db.Products, {foreignKey: 'C_ID'});
 db.Products.belongsTo(db.Customers, {foreignKey: 'C_ID'});
-db.subCategory.hasMany(db.Products, {foreignKey: 'SubCat_ID'});
-db.Products.belongsTo(db.subCategory, {foreignKey: 'SubCat_ID'});
-db.category.hasMany(db.Products, {foreignKey: 'Cat_ID'});
-db.Products.belongsTo(db.category, {foreignKey: 'Cat_ID'});
+db.subCategory.hasMany(db.Products, {foreignKey: 'SubCat_Name'});
+db.Products.belongsTo(db.subCategory, {foreignKey: 'SubCat_Name'});
+db.category.hasMany(db.Products, {foreignKey: 'Cat_Name'});
+db.Products.belongsTo(db.category, {foreignKey: 'Cat_Name'});
 
 
 module.exports = db
