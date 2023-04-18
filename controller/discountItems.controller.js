@@ -1,6 +1,8 @@
 const db = require("../models/index.model.js");
+
 const DiscountItems = db.DiscountItems;
 const Op = db.Sequelize.Op;
+
 exports.create = (req, res) => {
   if (!req.body.DI_Percentage) {
     res.status(400).send({
@@ -20,6 +22,7 @@ exports.create = (req, res) => {
       res.status(500).send(err.message);
     });
 };
+
 exports.findAll = (req, res) => {
     if(req.query.page && req.query.pageSize){
       page = req.query.page
@@ -42,6 +45,7 @@ exports.findAll = (req, res) => {
         })
       })
 };
+
 exports.findOne = (req, res) => {
   const DI_ID = req.params.DI_ID;
   DiscountItems.findByPk(DI_ID)
@@ -60,6 +64,7 @@ exports.findOne = (req, res) => {
       });
     });
 };
+
 exports.update = (req, res) => {
   const DI_ID = req.params.DI_ID;
   DiscountItems.update(req.body, {
