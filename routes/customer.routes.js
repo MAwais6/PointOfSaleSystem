@@ -10,6 +10,7 @@ const subCategoryRoutes = require("./subcategory.routes.js")
 const orderRoutes = require("./order.routes.js")
 const discountRoutes = require("./discounts.routes.js")
 const discountItemRoutes = require("./discountItems.routes.js")
+const paymentRoutes = require("./payment.routes.js")
 
 // use the routes
 router.get("/dashboard",[authJwt.verifyToken] ,controller.customerDashboard)
@@ -20,6 +21,8 @@ router.use("/subcategory", [authJwt.verifyToken] , subCategoryRoutes)
 router.use("/order", [authJwt.verifyToken] , orderRoutes)
 router.use("/discount", [authJwt.verifyToken] , discountRoutes)
 router.use("/discountItem", [authJwt.verifyToken] , discountItemRoutes)
+router.use("/payment", [authJwt.verifyToken] , paymentRoutes)
+
 
 // export the router
 module.exports = router;
